@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "build": "wrangler deploy --dry-run",
+    "build": "mkdir -p dist && cp -r frontend/* dist/",
+    "build:worker": "wrangler deploy --dry-run",
     "test": "vitest",
     "test:watch": "vitest --watch",
     "cf-typegen": "wrangler types",
