@@ -25,7 +25,7 @@ if (fs.existsSync(frontendDir)) {
       fs.copyFileSync(srcFile, destFile);
     }
   }
-  console.log('✅ Frontend files copied to dist/');
+  console.log('✅ Frontend files copied to dist/ - ' + new Date().toISOString());
 } else {
   console.error('❌ Frontend directory not found');
   process.exit(1);
