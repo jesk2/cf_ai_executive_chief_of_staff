@@ -1,7 +1,6 @@
 # CF AI Executive Chief of Staff
 
 Frontend (Pages): https://cf-ai-executive-chief-of-staff.pages.dev
-Backend API (Worker): https://cf_ai_productivity_assistant.219jessicak.workers.dev
 
 **Meet your AI Executive Assistant** - A hyper-intelligent digital chief of staff that thinks like a top-tier executive assistant, built on Cloudflare's cutting-edge AI platform. It doesn't just manage tasks; it anticipates your needs, strategizes your time, and operates with the sophistication of a C-suite aide.
 
