@@ -1,0 +1,38 @@
+name = "cf_ai_productivity_assistant"
+main = "src/index.ts"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+[ai]
+binding = "AI"
+
+[[durable_objects.bindings]]
+name = "PRODUCTIVITY_AGENT"
+class_name = "ProductivityAgent"
+
+[[durable_objects.bindings]]
+name = "TASK_MANAGER"
+class_name = "TaskManager"
+
+[[durable_objects.bindings]]
+name = "USER_SESSION"
+class_name = "UserSession"
+
+[[workflows]]
+binding = "WORKFLOWS"
+class_name = "ProductivityWorkflow"
+
+[[vectorize]]
+binding = "VECTORIZE_INDEX"
+index_name = "productivity-tasks"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["ProductivityAgent", "TaskManager", "UserSession"]
+
+[vars]
+ENVIRONMENT = "development"
+
+# Example production variables (add to wrangler.toml after copying from wrangler.example.toml)
+# OPENAI_API_KEY = "your-openai-api-key"
+# DATABASE_URL = "your-database-url"

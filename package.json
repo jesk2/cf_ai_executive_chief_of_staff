@@ -1,0 +1,37 @@
+{
+  "name": "cf_ai_executive_chief_of_staff",
+  "version": "1.0.0",
+  "description": "🎩 Elite AI Chief of Staff - Strategic executive assistant with sophisticated business intelligence, built on Cloudflare's AI platform",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "build": "wrangler deploy --dry-run",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "cf-typegen": "wrangler types",
+    "create-index": "wrangler vectorize create productivity-tasks --dimensions 768 --metric cosine",
+    "delete-index": "wrangler vectorize delete productivity-tasks"
+  },
+  "keywords": [
+    "cloudflare",
+    "ai",
+    "agent",
+    "productivity",
+    "llama",
+    "workflows",
+    "durable-objects"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241218.0",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.0.0",
+    "wrangler": "^3.98.0"
+  },
+  "dependencies": {
+    "agents": "latest"
+  }
+}
