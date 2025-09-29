@@ -22,7 +22,154 @@
             height: 100vh;
             width: 100vw;
             display: flex;
+        }
+
+        .sidebar {
+            width: 320px;
+            background: white;
+            border-right: 1px solid #f0f0f0;
+            display: flex;
             flex-direction: column;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+            position: absolute;
+            z-index: 1000;
+        }
+
+        .sidebar-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+            transition: all 0.3s ease;
+            font-size: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-toggle:hover {
+            background: #f8f8f8;
+            transform: scale(1.05);
+        }
+
+        .sidebar-header {
+            padding: 30px 20px 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .sidebar-header h2 {
+            color: #1a1a1a;
+            font-size: 20px;
+            font-weight: 400;
+            margin-bottom: 12px;
+        }
+
+        .user-info {
+            background: linear-gradient(135deg, #000 0%, #333 100%);
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section h3 {
+            color: #666;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .executive-metric {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid #e0e0e0;
+            color: #333;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .executive-metric .metric-value {
+            font-size: 28px;
+            font-weight: 300;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .executive-metric .metric-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.8;
+        }
+
+        .strategic-insight {
+            background: #f8f9ff;
+            border: 1px solid #e0e6ff;
+            border-left: 4px solid #6366f1;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 12px 0;
+            font-size: 14px;
+            color: #4338ca;
+            line-height: 1.5;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .executive-command {
+            background: white;
+            border: 1px solid #e0e0e0;
+            color: #333;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            font-weight: 400;
+        }
+
+        .executive-command:hover {
+            background: #f8f8f8;
+            border-color: #000;
+            transform: translateY(-1px);
+        }
+
+        .main-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
         }
 
         .header {
@@ -38,6 +185,12 @@
             font-weight: 300;
             letter-spacing: -0.5px;
             margin-bottom: 8px;
+            margin-left: 60px;
+            transition: margin-left 0.3s ease;
+        }
+
+        .sidebar.hidden ~ .main-area .header h1 {
+            margin-left: 0;
         }
 
         .status {
@@ -291,18 +444,111 @@
         .messages::-webkit-scrollbar-thumb:hover {
             background: #ccc;
         }
+
+        /* Mobile responsive adjustments */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: absolute;
+                z-index: 1000;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            }
+            
+            .main-area {
+                width: 100%;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .sidebar-toggle {
+                z-index: 1001;
+            }
+
+            .executive-metric {
+                padding: 16px;
+                margin-bottom: 10px;
+            }
+
+            .executive-metric .metric-value {
+                font-size: 24px;
+            }
+
+            .sidebar-content {
+                padding: 16px;
+            }
+
+            .section {
+                margin-bottom: 24px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="connection-status" id="connectionStatus">Connecting...</div>
-        
-        <div class="header">
-            <h1>🎩 AI Executive Chief of Staff</h1>
-            <div class="status" id="status">Strategic consultation • Decision optimization • Executive intelligence</div>
+        <div class="sidebar-toggle" onclick="toggleSidebar()" title="Toggle Executive Dashboard">
+            ☰
         </div>
         
-        <div class="chat-container">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>Executive Dashboard</h2>
+                <div class="user-info">
+                    <div style="font-weight: 600;">Chief of Staff Assistant</div>
+                    <div style="opacity: 0.9; margin-top: 4px;">Strategic Intelligence Active</div>
+                </div>
+            </div>
+            
+            <div class="sidebar-content">
+                <div class="section">
+                    <h3>Executive Metrics</h3>
+                    <div class="executive-metric">
+                        <span class="metric-value">127</span>
+                        <span class="metric-label">Strategic Initiatives</span>
+                    </div>
+                    <div class="executive-metric">
+                        <span class="metric-value">94%</span>
+                        <span class="metric-label">Operational Efficiency</span>
+                    </div>
+                    <div class="executive-metric">
+                        <span class="metric-value">$2.4M</span>
+                        <span class="metric-label">Pipeline Value</span>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Strategic Insights</h3>
+                    <div class="strategic-insight">
+                        Q4 market positioning requires accelerated product development timeline
+                    </div>
+                    <div class="strategic-insight">
+                        Cross-functional team efficiency up 23% with new coordination protocols
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Quick Commands</h3>
+                    <div class="quick-actions">
+                        <button class="executive-command" onclick="quickCommand('market analysis')">Market Analysis</button>
+                        <button class="executive-command" onclick="quickCommand('team status')">Team Status</button>
+                        <button class="executive-command" onclick="quickCommand('financial summary')">Financial Summary</button>
+                        <button class="executive-command" onclick="quickCommand('risk assessment')">Risk Assessment</button>
+                        <button class="executive-command" onclick="quickCommand('strategic priorities')">Strategic Priorities</button>
+                        <button class="executive-command" onclick="quickCommand('competitor intel')">Competitor Intel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-area">
+            <div class="connection-status" id="connectionStatus">Connecting...</div>
+            
+            <div class="header">
+                <h1>🎩 AI Executive Chief of Staff</h1>
+                <div class="status" id="status">Strategic consultation • Decision optimization • Executive intelligence</div>
+            </div>
+            
+            <div class="chat-container">
             <div class="messages" id="messages">
                 <div class="message assistant">
                     <div class="message-content">
@@ -341,6 +587,7 @@
                     ></textarea>
                 </div>
                 <button id="sendButton" class="send-button" title="Send message">→</button>
+            </div>
             </div>
         </div>
     </div>
