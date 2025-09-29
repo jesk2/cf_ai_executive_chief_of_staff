@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chief of Staff | Executive Command Center</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #fafafa;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar {
+            display: none; /* Hidden for minimalistic design */
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #e0e6ed;
+        }
+
+        .sidebar-header h2 {
+            color: #2d3748;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .user-info {
+            background: #667eea;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .task-section {
+            margin-bottom: 30px;
+        }
+
+        .task-section h3 {
+            color: #4a5568;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .task-item {
+            background: white;
+            border: 1px solid #e0e6ed;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .task-item:hover {
+            border-color: #667eea;
+            transform: translateY(-1px);
+        }
+
+        .task-title {
+            font-weight: 500;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+
+        .task-meta {
+            font-size: 12px;
+            color: #718096;
+        }
+
+        .executive-metric {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+
+        .executive-metric .metric-value {
+            font-size: 24px;
+            font-weight: 600;
+            display: block;
+        }
+
+        .executive-metric .metric-label {
+            opacity: 0.9;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .strategic-insight {
+            background: #f0f7ff;
+            border: 1px solid #b3d9ff;
+            border-left: 4px solid #3182ce;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 13px;
+            color: #2c5282;
+        }
+
+        .executive-command {
+            background: linear-gradient(45deg, #4299e1, #3182ce);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            margin: 4px;
+            transition: all 0.3s;
+        }
+
+        .executive-command:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(66, 153, 225, 0.4);
+        }
+
+        .priority-critical { border-left: 4px solid #e53e3e; }
+        .priority-strategic { border-left: 4px solid #3182ce; }
+        .priority-operational { border-left: 4px solid #38a169; }
+        .priority-routine { border-left: 4px solid #718096; }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .header {
+            padding: 20px 40px;
+            background: white;
+            border-bottom: 1px solid #f0f0f0;
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            color: #1a1a1a;
+            font-size: 28px;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+        }
+
+        .status {
+            font-size: 16px;
+            color: #666;
+            margin-top: 8px;
+            font-weight: 300;
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px 40px 20px;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            margin-bottom: 32px;
+            display: flex;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message-content {
+            max-width: 85%;
+            padding: 20px 24px;
+            border-radius: 24px;
+            font-size: 16px;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .message.user .message-content {
+            background: #000;
+            color: white;
+            border-bottom-right-radius: 8px;
+        }
+
+        .message.assistant .message-content {
+            background: #f8f8f8;
+            color: #333;
+            border-bottom-left-radius: 8px;
+            border: none;
+        }
+
+        .input-container {
+            padding: 40px;
+            background: white;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            gap: 20px;
+            align-items: flex-end;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .message-input {
+            width: 100%;
+            border: 1px solid #e0e0e0;
+            border-radius: 28px;
+            padding: 18px 24px;
+            font-size: 16px;
+            resize: none;
+            outline: none;
+            transition: all 0.3s ease;
+            min-height: 56px;
+            max-height: 140px;
+            background: #fafafa;
+            font-weight: 300;
+        }
+
+        .message-input:focus {
+            border-color: #000;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .message-input::placeholder {
+            color: #999;
+            font-weight: 300;
+        }
+
+        .send-button, .voice-button {
+            background: #000;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+
+        .send-button:hover, .voice-button:hover {
+            background: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .voice-button.recording {
+            background: #f56565;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(245, 101, 101, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(245, 101, 101, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(245, 101, 101, 0); }
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 20px 24px;
+            background: #f8f8f8;
+            border-radius: 24px;
+            border-bottom-left-radius: 8px;
+            margin-bottom: 32px;
+            max-width: 85%;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .typing-dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ccc;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-8px); opacity: 1; }
+        }
+
+        .connection-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 400;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .connection-status.connected {
+            background: rgba(34, 197, 94, 0.1);
+            color: #15803d;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .connection-status.disconnected {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .messages {
+                padding: 20px;
+            }
+            
+            .input-container {
+                padding: 20px;
+            }
+            
+            .message-content {
+                font-size: 15px;
+                max-width: 90%;
+            }
+            
+            .send-button, .voice-button {
+                width: 48px;
+                height: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="connection-status" id="connectionStatus">Connecting...</div>
+        
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>🎩 AI Chief of Staff</h2>
+                <div class="user-info">
+                    <div id="userName">Executive Dashboard</div>
+                    <div id="userStats">0 initiatives • 0 strategic projects</div>
+                </div>
+            </div>
+            
+            <div class="sidebar-content">
+                <div class="task-section">
+                    <h3>Executive Dashboard</h3>
+                    <div class="executive-metric">
+                        <span class="metric-value" id="strategicProgress">87%</span>
+                        <span class="metric-label">Strategic Alignment</span>
+                    </div>
+                    <div class="executive-metric">
+                        <span class="metric-value" id="cognitiveLoad">68%</span>
+                        <span class="metric-label">Cognitive Load</span>
+                    </div>
+                    <div class="executive-metric">
+                        <span class="metric-value" id="decisionVelocity">2.3</span>
+                        <span class="metric-label">Decisions/Hour</span>
+                    </div>
+                </div>
+                
+                <div class="task-section">
+                    <h3>Strategic Intelligence</h3>
+                    <div class="strategic-insight">
+                        💡 <strong>Pattern Alert:</strong> Peak decision quality detected between 9-11 AM. Consider scheduling strategic reviews during this window.
+                    </div>
+                </div>
+
+                <div class="task-section">
+                    <h3>Today's Strategic Focus</h3>
+                    <div id="todayTasks">
+                        <div class="task-item priority-critical">
+                            <div class="task-title">🎯 Ready to orchestrate your day</div>
+                            <div class="task-meta">Try: "Analyze my strategic priorities and identify force multipliers"</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="task-section">
+                    <h3>Executive Command Center</h3>
+                    <button class="executive-command" onclick="sendQuickMessage('Generate an executive briefing on my current strategic position')">
+                        📊 Strategic Briefing
+                    </button>
+                    <button class="executive-command" onclick="sendQuickMessage('Apply the Eisenhower Matrix to my current initiatives')">
+                        🎯 Priority Matrix
+                    </button>
+                    <button class="executive-command" onclick="sendQuickMessage('Analyze my decision patterns and cognitive load')">
+                        🧠 Decision Analytics
+                    </button>
+                    <button class="executive-command" onclick="sendQuickMessage('Create scenario plans for my key strategic objectives')">
+                        � Scenario Planning
+                    </button>
+                    <button class="executive-command" onclick="sendQuickMessage('Identify force multipliers and delegation opportunities')">
+                        🚀 Force Multipliers
+                    </button>
+                    <button class="executive-command" onclick="sendQuickMessage('Optimize my energy allocation for maximum strategic impact')">
+                        ⚡ Energy Optimization
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="header">
+                <h1>Executive Command Center</h1>
+                <div class="status" id="status">Your AI Chief of Staff is ready for strategic consultation</div>
+            </div>
+            
+            <div class="chat-container">
+                <div class="messages" id="messages">
+                    <div class="message assistant">
+                        <div class="message-content">
+                            🎩 <strong>Good day. I'm your AI Chief of Staff.</strong>
+                            <br><br>
+                            I operate with the strategic acumen of a top-tier executive assistant:
+                            <br><br>
+                            • <strong>Strategic Orchestration:</strong> Transform objectives into executable plans<br>
+                            • <strong>Executive Time Design:</strong> Architect your schedule for maximum impact<br>
+                            • <strong>Intelligence Synthesis:</strong> Connect patterns across your entire operation<br>
+                            • <strong>Proactive Opportunity Mining:</strong> Identify force multipliers and efficiency gains<br>
+                            • <strong>Decision Support:</strong> Provide data-driven strategic recommendations<br>
+                            <br>
+                            What strategic challenge shall we tackle first?
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="typing-indicator" id="typingIndicator">
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+                
+                <div class="input-container">
+                    <div class="input-wrapper">
+                        <textarea 
+                            id="messageInput" 
+                            class="message-input" 
+                            placeholder="Strategic consultation: Ask about decision frameworks, priority optimization, competitive analysis, or executive briefings..."
+                            rows="1"
+                        ></textarea>
+                    </div>
+                    <button id="voiceButton" class="voice-button" title="Voice input">🎤</button>
+                    <button id="sendButton" class="send-button" title="Send message">➤</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
