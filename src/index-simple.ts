@@ -42,8 +42,8 @@ export class ProductivityAgent extends DurableObject {
       const { message } = await request.json() as { message: string };
       
       try {
-        // Use Llama 3.3 for AI response
-        const response = await this.env.AI.run('@cf/meta/llama-3.3-70b-instruct', {
+        // Use Llama 3.1 for AI response (Llama 3.3 might not be available yet)
+        const response = await this.env.AI.run('@cf/meta/llama-3.1-70b-instruct', {
           messages: [
             { 
               role: 'system', 
@@ -69,11 +69,12 @@ export class ProductivityAgent extends DurableObject {
           headers: { 'Content-Type': 'application/json' }
         });
 
-      } catch (error) {
+      } catch (error: any) {
+        console.error('AI Error:', error);
         return new Response(JSON.stringify({
           id: crypto.randomUUID(),
           userId: 'user',
-          content: 'I apologize, but I encountered an issue processing your strategic consultation. Please try again.',
+          content: `I apologize, but I encountered an issue processing your strategic consultation. Error: ${error.message || error}. Please try again.`,
           timestamp: new Date().toISOString(),
           type: 'assistant'
         }), {

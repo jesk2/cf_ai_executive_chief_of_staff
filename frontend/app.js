@@ -54,7 +54,7 @@ class ExecutiveChiefOfStaff {
     }
 
     connectWebSocket() {
-        const wsUrl = `ws://localhost:8787/api/ws?userId=${this.userId}`;
+        const wsUrl = `wss://cf_ai_productivity_assistant.219jessicak.workers.dev/api/ws?userId=${this.userId}`;
         // For production, use wss://your-worker-domain/api/ws?userId=${this.userId}
         
         try {
@@ -211,7 +211,7 @@ class ExecutiveChiefOfStaff {
 
     async sendMessageHTTP(message) {
         try {
-            const response = await fetch('/api/chat', {
+            const response = await fetch('https://cf_ai_productivity_assistant.219jessicak.workers.dev/api/chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -297,7 +297,7 @@ class ExecutiveChiefOfStaff {
 
     async loadStrategicInitiatives() {
         try {
-            const response = await fetch(`/api/tasks?userId=${this.userId}&status=todo,in-progress`);
+            const response = await fetch(`https://cf_ai_productivity_assistant.219jessicak.workers.dev/api/tasks?userId=${this.userId}&status=todo,in-progress`);
             
             if (response.ok) {
                 const initiatives = await response.json();
